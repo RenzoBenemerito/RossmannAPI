@@ -88,4 +88,5 @@ def test_input_format():
     assert response.status_code == 422
     result_set = response.json()
     assert result_set["detail"][0]["msg"] == "field required"
+    ## TESTING CI DEV
     

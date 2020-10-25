@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from models import Payload
-
+from ml import pre_process, predict
 
 app = FastAPI()
 
@@ -16,5 +16,7 @@ async def predict_rossmann_sales(payload: Payload):
     output: JSON format { sales: int }
     DOCS URL: /docs#/default/predict_sales_predict_post
     """
-    result_set = { "sales": 123.45 }
+    data = pre_process(payload)
+    sales = round(predict(data),3)
+    result_set = { "sales": sales }
     return result_set

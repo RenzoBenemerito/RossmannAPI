@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Model Files
+*.joblib
+*.h5
+*.model
+
+# Wandb
+/*/wandb

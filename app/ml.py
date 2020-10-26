@@ -21,6 +21,12 @@ def download_from_s3():
     )
     s3.Bucket('rossmann-mynt').download_file(Key='models/model.joblib', Filename='../model/model.joblib')
 
+## Check working directory and Set if not valid (FOR DOCKER)
+if "main.py" not in os.listdir('.'):
+    print(os.getcwd())
+    print("Settings Working Directory to app/")
+    os.chdir("/app/app/")
+
 ## Load the model and store data
 if os.path.exists('../model/model.joblib'):
     clf = load('../model/model.joblib') 

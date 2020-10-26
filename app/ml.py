@@ -9,11 +9,6 @@ import boto3
 This file contains the functions related to the ML model.
 """
 
-## Load the model and store data
-clf = load('../model/model.joblib') 
-store = pd.read_csv("../datasets/store.csv")
-store.fillna(0, inplace=True)
-
 def download_from_s3():
     """
     Function for downloading the most recent model in AWS s3
@@ -24,7 +19,15 @@ def download_from_s3():
         aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
         aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"]
     )
-    s3.Bucket('rossmann-mynt').download_file(Key='models/model.joblib', Filename='../model/model1.joblib')
+    s3.Bucket('rossmann-mynt').download_file(Key='models/model.joblib', Filename='../model/model.joblib')
+
+## Load the model and store data
+if os.path.exists('../model/model.joblib'):
+    clf = load('../model/model.joblib') 
+else:
+    download_from_s3() # Download the model from s3 if not found
+store = pd.read_csv("../datasets/store.csv")
+store.fillna(0, inplace=True)
 
 def pre_process(data):
     sample = pd.DataFrame(data.dict(), index=[0])

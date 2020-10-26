@@ -47,10 +47,6 @@ def test_input_format():
         },
     )
     assert response.status_code == 200
-    result_set = response.json()
-    assert len(result_set.keys()) == 1
-    assert list(result_set.keys())[0] == "sales"
-    assert type(result_set[list(result_set.keys())[0]]) == float
     ## Test cases for missing keys
     response = client.post(
         "/predict",
@@ -135,3 +131,25 @@ def test_rmse_and_output():
 
     assert rmse_result < 2000 # RMSE should be less than 2000
     assert type(y_pred[0]) == np.float64 # Model output should be numeric/float
+
+@pytest.mark.us001ts004
+def test_api_response():
+    ## Test the expected format
+    response = client.post(
+        "/predict",
+        json={
+            "Store": 1111,
+            "DayOfWeek": 4,
+            "Date": "2014-07-10",
+            "Customers": 410,
+            "Open": 1,
+            "Promo": 0,
+            "StateHoliday": "0",
+            "SchoolHoliday": 1
+        },
+    )
+    assert response.status_code == 200
+    result_set = response.json()
+    assert len(result_set.keys()) == 1
+    assert list(result_set.keys())[0] == "sales"
+    assert type(result_set[list(result_set.keys())[0]]) == float

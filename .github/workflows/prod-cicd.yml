@@ -10,7 +10,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-test-deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -37,26 +37,14 @@ jobs:
         AWS_REGION: 'ap-southeast-2' # optional: defaults to us-east-1
         SOURCE: 's3://rossmann-mynt/models/model.joblib'
         DEST: 'model/model.joblib'
-    - name: Test with pytest
+    - name: Test
       run: |
         cd app/
         pytest -v
-  
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: S3 cp
-        uses: prewk/s3-cp-action@v0.1.1
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'ap-southeast-2' # optional: defaults to us-east-1
-          SOURCE: 's3://rossmann-mynt/models/model.joblib'
-          DEST: 'model/model.joblib'
-      - uses: akhileshns/heroku-deploy@v3.6.8
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "renzorossmann"
-          heroku_email: "rbenemerito1@gmail.com"
-          usedocker: true
+    - name: Deploy
+      uses: akhileshns/heroku-deploy@v3.6.8
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "renzorossmann"
+        heroku_email: "rbenemerito1@gmail.com"
+        usedocker: true

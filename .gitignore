@@ -128,7 +128,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Model Artifacts
+# Model Files
 *.joblib
-*.model
 *.h5
+*.model
+
+# Wandb
+/*/wandb

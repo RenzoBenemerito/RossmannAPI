@@ -35,7 +35,7 @@ def test_prod_rmse():
     for i in range(10):
         print(int(df.iloc[i,:]["Open"]))
         response = requests.post(
-            "https://renzorossmann.herokuapp.com/predict",
+            "http://127.0.0.1:8000/predict",
             json={
                 "Store": int(df.iloc[i,:]["Store"]),
                 "DayOfWeek": int(df.iloc[i,:]["DayOfWeek"]),

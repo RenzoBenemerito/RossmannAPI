@@ -32,6 +32,8 @@ if os.path.exists('../model/model.joblib'):
     clf = load('../model/model.joblib') 
 else:
     download_from_s3() # Download the model from s3 if not found
+
+# Initialize store csv for joining to request data
 store = pd.read_csv("../datasets/store.csv")
 store.fillna(0, inplace=True)
 
@@ -55,7 +57,7 @@ def pre_process(data):
         (X.WeekOfYear - X.Promo2SinceWeek) / 4.0
     X['PromoOpen'] = X['PromoOpen'].apply(lambda x: x if x > 0 else 0)
     
-    X.drop(columns = ['Date','Open', 'Customers', 'Open', 'PromoInterval'], inplace=True)
+    X.drop(columns = ['Date','Open', 'Open', 'PromoInterval'], inplace=True)
     # Store	DayOfWeek	Promo	StateHoliday	SchoolHoliday	StoreType	Assortment	CompetitionDistance	CompetitionOpenSinceMonth	CompetitionOpenSinceYear	Promo2	Promo2SinceWeek	Promo2SinceYear	Month	Year	Day	WeekOfYear	CompetitionOpen	PromoOpen
     # pd.Series(data.dict())
     return X.to_numpy()

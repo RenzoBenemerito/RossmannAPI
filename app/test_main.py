@@ -98,7 +98,7 @@ def test_rmse_and_output():
     merged = merged.sort_values(['Date'],ascending = False)
     merged = merged[(merged.Open != 0)&(merged.Sales >0)]
     merged.loc[:,"StateHoliday"] = df.StateHoliday.apply(lambda x: '0' if x == 0 else x)
-    X = merged[['Date', 'Store','DayOfWeek', 'Promo', 'StateHoliday', 'SchoolHoliday',
+    X = merged[['Date', 'Store', 'Customers', 'DayOfWeek', 'Promo', 'StateHoliday', 'SchoolHoliday',
        'StoreType', 'Assortment', 'CompetitionDistance',
        'CompetitionOpenSinceMonth', 'CompetitionOpenSinceYear', 'Promo2',
        'Promo2SinceWeek', 'Promo2SinceYear']].copy()

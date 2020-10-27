@@ -48,3 +48,7 @@ jobs:
         heroku_app_name: "renzorossmann"
         heroku_email: "rbenemerito1@gmail.com"
         usedocker: true
+    - name: Test Production
+      run: |
+        cd app/
+        pytest -v test_prod.py

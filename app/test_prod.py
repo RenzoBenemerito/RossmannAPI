@@ -33,6 +33,7 @@ def test_prod_rmse():
     y_val = df["Sales"]
     y_pred = []
     for i in range(10):
+        print(int(df.iloc[i,:]["Open"]))
         response = requests.post(
             "https://renzorossmann.herokuapp.com/predict",
             json={
@@ -49,4 +50,7 @@ def test_prod_rmse():
         result_set = response.json()
         y_pred.append(result_set["sales"])
     rmse_result = mean_squared_error(y_val, y_pred, squared=False)
+    print(y_val, y_pred, rmse_result)
     assert rmse_result < 2000
+
+test_prod_rmse()

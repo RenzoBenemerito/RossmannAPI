@@ -32,6 +32,8 @@ if os.path.exists('../model/model.joblib'):
     clf = load('../model/model.joblib') 
 else:
     download_from_s3() # Download the model from s3 if not found
+
+# Initialize store csv for joining to request data
 store = pd.read_csv("../datasets/store.csv")
 store.fillna(0, inplace=True)
 

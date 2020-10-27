@@ -58,6 +58,7 @@ def pre_process(data):
     X['PromoOpen'] = X['PromoOpen'].apply(lambda x: x if x > 0 else 0)
     
     X.drop(columns = ['Date','Open', 'Open', 'PromoInterval'], inplace=True)
+    print(X.columns)
     # Store	DayOfWeek	Promo	StateHoliday	SchoolHoliday	StoreType	Assortment	CompetitionDistance	CompetitionOpenSinceMonth	CompetitionOpenSinceYear	Promo2	Promo2SinceWeek	Promo2SinceYear	Month	Year	Day	WeekOfYear	CompetitionOpen	PromoOpen
     # pd.Series(data.dict())
     return X.to_numpy()

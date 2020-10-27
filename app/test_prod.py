@@ -33,6 +33,7 @@ def test_prod_rmse():
     y_val = df["Sales"]
     y_pred = []
     for i in range(10):
+        print(int(df.iloc[i,:]["Open"]))
         response = requests.post(
             "https://renzorossmann.herokuapp.com/predict",
             json={

@@ -7,3 +7,5 @@ WORKDIR /app/app/
 COPY . /app/
 
 RUN pip install -r /app/requirements.txt
+
+ENV MAX_WORKERS=3

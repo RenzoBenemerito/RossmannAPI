@@ -2,6 +2,7 @@ from joblib import load
 import numpy as np
 import pandas as pd
 from fastapi.encoders import jsonable_encoder
+import xgboost as xgb
 import os
 import boto3
 
@@ -45,7 +46,7 @@ def pre_process(data):
     X["Month"] = X.Date.dt.month
     X["Year"] = X.Date.dt.year
     X["Day"] = X.Date.dt.day
-    X['WeekOfYear'] = X.Date.dt.isocalendar().week
+    X['WeekOfYear'] = X.Date.dt.isocalendar().week.astype("int64")
     mappings = {'0':0, 'a':1, 'b':2, 'c':3, 'd':4}
     X.StoreType.replace(mappings, inplace=True)
     X.Assortment.replace(mappings, inplace=True)
@@ -56,20 +57,19 @@ def pre_process(data):
     X['PromoOpen'] = 12 * (X.Year - X.Promo2SinceYear) + \
         (X.WeekOfYear - X.Promo2SinceWeek) / 4.0
     X['PromoOpen'] = X['PromoOpen'].apply(lambda x: x if x > 0 else 0)
-    
     X.drop(columns = ['Date','Open', 'Open', 'PromoInterval'], inplace=True)
-    print(X.columns)
-    # Store	DayOfWeek	Promo	StateHoliday	SchoolHoliday	StoreType	Assortment	CompetitionDistance	CompetitionOpenSinceMonth	CompetitionOpenSinceYear	Promo2	Promo2SinceWeek	Promo2SinceYear	Month	Year	Day	WeekOfYear	CompetitionOpen	PromoOpen
-    # pd.Series(data.dict())
-    return X.to_numpy()
+
+    return xgb.DMatrix(X)
 
 def predict(data):
     y_pred = clf.predict(data)
-    return np.expm1(y_pred[0])
+    return np.expm1(y_pred[0]) # our prediction is in log so apply exp function to reverse
 
 def predict_test(data):
+    data = xgb.DMatrix(data)
     y_pred = clf.predict(data)
     return y_pred
+
 # Define eval metrics
 def rmspe(y, yhat):
     return np.sqrt(np.mean((yhat/y-1) ** 2))

@@ -20,6 +20,6 @@ async def predict_rossmann_sales(payload: Payload):
         result_set = { "sales": 0.0 }
     else:
         data = pre_process(payload)
-        sales = round(predict(data),3)
+        sales = float(round(predict(data),3))
         result_set = { "sales": sales }
     return result_set

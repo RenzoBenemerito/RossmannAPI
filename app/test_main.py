@@ -106,7 +106,7 @@ def test_rmse_and_output():
     X.loc[:,"Month"] = X.Date.dt.month
     X.loc[:,"Year"] = X.Date.dt.year
     X.loc[:,"Day"] = X.Date.dt.day
-    X.loc[:,'WeekOfYear'] = X.Date.dt.isocalendar().week
+    X.loc[:,'WeekOfYear'] = X.Date.dt.isocalendar().week.astype("int64")
     X.drop(columns = ['Date'], inplace=True)
     mappings = {'0':0, 'a':1, 'b':2, 'c':3, 'd':4}
     X.StoreType.replace(mappings, inplace=True)
@@ -131,7 +131,7 @@ def test_rmse_and_output():
 
     assert rmse_result < 2000 # RMSE should be less than 2000
     assert type(y_pred[0]) == np.float64 # Model output should be numeric/float
-
+test_rmse_and_output()
 @pytest.mark.us001ts004
 def test_api_response():
     ## Test the expected format

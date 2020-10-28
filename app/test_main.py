@@ -129,9 +129,15 @@ def test_rmse_and_output():
     y_pred = predict_test(X_val)
     rmse_result = mean_squared_error(np.expm1(y_val), np.expm1(y_pred), squared=False)
 
+    # Check for numeric
+    def check_numeric(data):
+        if type(data) == float or type(data) == np.float32 or type(data) == np.float64:
+            return True
+        else:
+            return False
     assert rmse_result < 2000 # RMSE should be less than 2000
-    assert type(y_pred[0]) == np.float64 # Model output should be numeric/float
-test_rmse_and_output()
+    assert check_numeric(y_pred[0]) # Model output should be numeric/float
+
 @pytest.mark.us001ts004
 def test_api_response():
     ## Test the expected format
